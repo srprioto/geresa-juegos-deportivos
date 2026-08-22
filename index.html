@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Juegos Deportivos GERESA 2026 — Resultados</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link href="https://fonts.googleapis.com/css2?family=Anton&family=Oswald:wght@400;500;600;700&family=Work+Sans:wght@400;500;600;700;800&family=Roboto+Mono:wght@500;700&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="styles.css">
+
+
+</head>
+<body>
+
+<div class="hero">
+	<img src="img\banner.jpg" >
+</div>
+
+<h2 class="subtitulo">Tabla de posiciones y resultados del campeonato</h2>
+
+<div class="tab-dock">
+	<button class="tab-btn active" data-target="futbol">
+		<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7l3.5 2.5-1.3 4.1H9.8L8.5 9.5z"/><path d="M12 3v4M3.5 9.5l3.6 1M20.5 9.5l-3.6 1M6.5 19l1.6-3.7M17.5 19l-1.6-3.7"/></svg>
+		Fútbol
+	</button>
+	<button class="tab-btn" data-target="voley">
+		<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 3c3 3 3 15 0 18M4 8c4 2 12 2 16 0M4 16c4-2 12-2 16 0"/></svg>
+		Vóley
+	</button>
+</div>
+
+<div class="wrap">
+
+	<!-- FUTBOL -->
+	<div class="pane active" id="futbol">
+
+		<div class="section-label">
+			<span class="tag">01</span>
+			<h2>Tabla de posiciones</h2>
+			<span class="rule"></span>
+		</div>
+
+		<div class="standings">
+			<table>
+				<thead>
+					<tr><th>Equipo</th><th>Goles</th><th>Puntos</th></tr>
+				</thead>
+				<tbody id="futbol-standings"></tbody>
+			</table>
+		</div>
+
+		<div class="section-label">
+			<span class="tag">02</span>
+			<h2>Partidos jugados</h2>
+			<span class="rule"></span>
+		</div>
+
+		<div class="matches" id="futbol-matches"></div>
+		<p class="note">Agradecemos reportar cualquier anomalía o incidencia técnica en este sitio web o en la visualización de resultados a los organizadores y al departamento de DEIT.</p>
+	</div>
+
+	<!-- VOLEY -->
+	<div class="pane" id="voley">
+
+		<div class="section-label">
+			<span class="tag">01</span>
+			<h2>Tabla de posiciones</h2>
+			<span class="rule"></span>
+		</div>
+
+		<div class="standings">
+			<table>
+				<thead>
+					<tr><th>Equipo</th><th>Sets</th><th>Puntos</th></tr>
+				</thead>
+				<tbody id="voley-standings"></tbody>
+			</table>
+		</div>
+
+		<div class="section-label">
+			<span class="tag">02</span>
+			<h2>Partidos jugados</h2>
+			<span class="rule"></span>
+		</div>
+
+		<div class="matches" id="voley-matches"></div>
+		<p class="note">Agradecemos reportar cualquier anomalía o incidencia técnica en este sitio web o en la visualización de resultados a los organizadores y al departamento de DEIT.</p>
+	</div>
+
+</div>
+
+<script src="./data/voley.js"></script>
+<script src="./data/futbol.js"></script>
+<script src="./render.js"></script>
+
+</body>
+</html>
