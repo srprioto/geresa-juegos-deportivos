@@ -308,8 +308,16 @@ table{ width:100%; border-collapse:collapse; }
 
 @media (max-width:480px){
 
+	.match-body tbody td{
+		padding: 5px 10px;
+	}
 	.team-name{
-		min-width: 170px;
+		min-width: auto;
+	}
+	.wrap {
+		max-width: 760px;
+		margin: 0 auto;
+		padding: 40px 5px 0;
 	}
 
 	/* .hero{
@@ -328,3 +336,4 @@ table{ width:100%; border-collapse:collapse; }
 	.match-meta{ display:none; }
 	.match-head{ padding:12px 14px; }
 }
+
