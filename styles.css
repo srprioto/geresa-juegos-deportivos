@@ -308,6 +308,10 @@ table{ width:100%; border-collapse:collapse; }
 
 @media (max-width:480px){
 
+	.team-name{
+		min-width: 170px;
+	}
+
 	/* .hero{
 	    height: 210px;
         display: flex;
