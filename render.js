@@ -1,4 +1,7 @@
-function calcularMatches(rawMatches, statKey){
+/* ---------------- CÁLCULO AUTOMÁTICO ---------------- */
+// A partir de { fecha, hora, filas:[{equipo, goles|sets}, {equipo, goles|sets}] }
+// calcula: numero (correlativo), ganador, y en cada fila: resultado (G/E/P) y puntos.
+function computeMatches(rawMatches, statKey){
 	return rawMatches.map((m, i) => {
 		const [a, b] = m.filas;
 		const va = a[statKey];
@@ -27,14 +30,17 @@ function calcularMatches(rawMatches, statKey){
 	});
 }
 
-function calcularClasif(processedMatches, statKey){
+// Suma goles/sets y puntos de cada equipo a partir de los partidos ya calculados.
+// El orden final se define en renderStandings: primero por puntos, luego por statKey.
+function computeStandings(processedMatches, statKey){
 	const tabla = {};
 
 	processedMatches.forEach(m=>{
 		m.filas.forEach(f=>{
 			if(!tabla[f.equipo]){
-				tabla[f.equipo] = { equipo: f.equipo, [statKey]: 0, puntos: 0 };
+				tabla[f.equipo] = { equipo: f.equipo, pj: 0, [statKey]: 0, puntos: 0 }; // cambio aqui: se agrega pj (partidos jugados)
 			}
+			tabla[f.equipo].pj += 1; // cambio aqui: cada fila = un partido jugado para ese equipo
 			tabla[f.equipo][statKey] += f[statKey];
 			tabla[f.equipo].puntos   += f.puntos;
 		});
@@ -43,14 +49,14 @@ function calcularClasif(processedMatches, statKey){
 	return Object.values(tabla);
 }
 
-// RENDER
+/* ---------------- RENDER ---------------- */
 function badgeFor(r){
 	if(r==="G") return '<span class="badge badge-g">G</span>';
 	if(r==="P") return '<span class="badge badge-p">P</span>';
 	return '<span class="badge badge-e">E</span>';
 }
 
-function renderClasif(targetId, rows, statKey, statLabel){
+function renderStandings(targetId, rows, statKey, statLabel){
 	const tbody = document.getElementById(targetId);
 	tbody.innerHTML = rows
 	.slice()
@@ -58,6 +64,8 @@ function renderClasif(targetId, rows, statKey, statLabel){
 	.map((r,i)=>`
 		<tr>
 			<td><div class="rank-cell"><span class="rank-num">${i+1}</span>${r.equipo}</div></td>
+			<td>${r.pj}</td>
+			<!-- cambio aqui: nueva celda con partidos jugados -->
 			<td>${r[statKey]}</td>
 			<td class="pts-cell">${r.puntos}</td>
 		</tr>
@@ -79,7 +87,7 @@ function renderMatches(targetId, matches, statKey, statLabel){
 			</div>
 			<div class="match-body">
 				<table>
-					<thead><tr><th>Equipo</th><th>${statLabel}</th><th>Result</th><th>Puntos</th></tr></thead>
+					<thead><tr><th>Equipo</th><th>${statLabel}</th><th>Resultado</th><th>Puntos</th></tr></thead>
 					<tbody>
 						${m.filas.map(f=>`
 							<tr>
@@ -96,17 +104,17 @@ function renderMatches(targetId, matches, statKey, statLabel){
 	`).join("");
 }
 
-// Escribir
-const futbolMatchesProcessed = calcularMatches(futbolMatches, "goles");
-const voleyMatchesProcessed  = calcularMatches(voleyMatches, "sets");
+/* ---------------- PROCESAR + PINTAR ---------------- */
+const futbolMatchesProcessed = computeMatches(futbolMatches, "goles");
+const voleyMatchesProcessed  = computeMatches(voleyMatches, "sets");
 
-const futbolStandingsComputed = calcularClasif(futbolMatchesProcessed, "goles");
-const voleyStandingsComputed  = calcularClasif(voleyMatchesProcessed, "sets");
+const futbolStandingsComputed = computeStandings(futbolMatchesProcessed, "goles");
+const voleyStandingsComputed  = computeStandings(voleyMatchesProcessed, "sets");
 
-renderClasif("futbol-standings", futbolStandingsComputed, "goles", "Goles");
+renderStandings("futbol-standings", futbolStandingsComputed, "goles", "Goles");
 renderMatches("futbol-matches", futbolMatchesProcessed, "goles", "Goles");
 
-renderClasif("voley-standings", voleyStandingsComputed, "sets", "Sets");
+renderStandings("voley-standings", voleyStandingsComputed, "sets", "Sets");
 renderMatches("voley-matches", voleyMatchesProcessed, "sets", "Sets");
 
 /* ---------------- TABS ---------------- */
