@@ -40,7 +40,7 @@ const futbolMatches = [
 		]
 	},
 	{
-		fecha:"28/08/2026", hora:"14:50",
+		fecha:"28/08/2026", hora:"15:50",
 		filas:[
 			{ equipo:"Planificación y RRHH", 	goles:3 },
 			{ equipo:"Calidad sanitaria",  		goles:0 },
