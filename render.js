@@ -117,6 +117,13 @@ renderMatches("futbol-matches", futbolMatchesProcessed, "goles", "Goles");
 renderStandings("voley-standings", voleyStandingsComputed, "sets", "Sets");
 renderMatches("voley-matches", voleyMatchesProcessed, "sets", "Sets");
 
+// cambio aqui: fútbol femenino — mismo procesamiento que fútbol masculino
+const futbolFemMatchesProcessed = computeMatches(futbolFemMatches, "goles");
+const futbolFemStandingsComputed = computeStandings(futbolFemMatchesProcessed, "goles");
+
+renderStandings("futbolf-standings", futbolFemStandingsComputed, "goles", "Goles");
+renderMatches("futbolf-matches", futbolFemMatchesProcessed, "goles", "Goles");
+
 /* ---------------- TABS ---------------- */
 document.querySelectorAll(".tab-btn").forEach(btn=>{
 	btn.addEventListener("click", ()=>{

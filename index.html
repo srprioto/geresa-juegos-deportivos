@@ -27,6 +27,11 @@
 		<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 3c3 3 3 15 0 18M4 8c4 2 12 2 16 0M4 16c4-2 12-2 16 0"/></svg>
 		Vóley
 	</button>
+	<!-- cambio aqui: nuevo tab de fútbol femenino -->
+	<button class="tab-btn" data-target="futbolf">
+		<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7l3.5 2.5-1.3 4.1H9.8L8.5 9.5z"/><path d="M12 3v4M3.5 9.5l3.6 1M20.5 9.5l-3.6 1M6.5 19l1.6-3.7M17.5 19l-1.6-3.7"/></svg>
+		Fútbol Femenino
+	</button>
 </div>
 
 <div class="wrap">
@@ -57,7 +62,7 @@
 		</div>
 
 		<div class="matches" id="futbol-matches"></div>
-		<p class="note">Partidos de ejemplo — reemplaza con los resultados reales de cada fecha.</p>
+		<p class="note">Si encuentras algún error o problema en esta landing page o en los resultados, por favor ponte en contacto con los organizadores y el área de DEIT.</p>
 	</div>
 
 	<!-- VOLEY -->
@@ -86,13 +91,43 @@
 		</div>
 
 		<div class="matches" id="voley-matches"></div>
-		<p class="note">Datos de ejemplo (mismos equipos) — reemplaza con los resultados reales de vóley.</p>
+		<p class="note">Si encuentras algún error o problema en esta landing page o en los resultados, por favor ponte en contacto con los organizadores y el área de DEIT.</p>
+	</div>
+
+	<!-- cambio aqui: nuevo pane de fútbol femenino (misma estructura/reglas que fútbol masculino) -->
+	<div class="pane" id="futbolf">
+
+		<div class="section-label">
+			<span class="tag">01</span>
+			<h2>Tabla de posiciones</h2>
+			<span class="rule"></span>
+		</div>
+
+		<div class="standings">
+			<table>
+				<thead>
+					<tr><th>Equipo</th><th>PJ</th><th>Goles</th><th>Puntos</th></tr>
+				</thead>
+				<tbody id="futbolf-standings"></tbody>
+			</table>
+		</div>
+
+		<div class="section-label">
+			<span class="tag">02</span>
+			<h2>Partidos jugados</h2>
+			<span class="rule"></span>
+		</div>
+
+		<div class="matches" id="futbolf-matches"></div>
+		<p class="note">Si encuentras algún error o problema en esta landing page o en los resultados, por favor ponte en contacto con los organizadores y el área de DEIT.</p>
 	</div>
 
 </div>
 
 <script src="./data/voley.js"></script>
 <script src="./data/futbol.js"></script>
+<!-- cambio aqui: nuevo archivo de datos de fútbol femenino -->
+<script src="./data/futbol-femenino.js"></script>
 <script src="./render.js"></script>
 
 </body>
