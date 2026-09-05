@@ -4,44 +4,44 @@ const voleyMatches = [
 	{
 		fecha:"21/08/2026", hora:"14:30",
 		filas:[
-			{ equipo:"Planificación y RRHH", 	sets:2 },
-			{ equipo:"Administración",       	sets:0 },
+			{ equipo: rh, 	sets:2 },
+			{ equipo: admin,       	sets:0 },
 		]
 	},
 	{
 		fecha:"21/08/2026", hora:"15:15",
 		filas:[
-			{ equipo:"Inteligencia sanitaria", 	sets:2 },
-			{ equipo:"Saneamiento ambiental", 	sets:1 },
+			{ equipo: deis, 	sets:2 },
+			{ equipo: sa, 	sets:1 },
 		]
 	},
 	{
 		fecha:"21/08/2026", hora:"16:00",
 		filas:[
-			{ equipo:"Calidad sanitaria",     	sets:0 },
-			{ equipo:"Salud Integral", 			sets:2 },
+			{ equipo: cs,     	sets:0 },
+			{ equipo: deais, 			sets:2 },
 		]
 	},
 
 	{
 		fecha:"28/08/2026", hora:"13:30",
 		filas:[
-			{ equipo:"Salud Integral", 			sets:2 },
-			{ equipo:"Saneamiento ambiental",  	sets:0 },
+			{ equipo: deais, 			sets:2 },
+			{ equipo: sa,  	sets:0 },
 		]
 	},
 	{
 		fecha:"28/08/2026", hora:"16:50",
 		filas:[
-			{ equipo:"Planificación y RRHH", 	sets:2 },
-			{ equipo:"Calidad sanitaria",  		sets:0 },
+			{ equipo: rh, 	sets:2 },
+			{ equipo: cs,  		sets:0 },
 		]
 	},
 	{
 		fecha:"28/08/2026", hora:"15:30",
 		filas:[
-			{ equipo:"Inteligencia sanitaria", 	sets:2 },
-			{ equipo:"Administración",  		sets:0 },
+			{ equipo: deis, 	sets:2 },
+			{ equipo: admin,  		sets:0 },
 		]
 	},
 
@@ -50,22 +50,22 @@ const voleyMatches = [
 	{
 		fecha:"04/09/2026", hora:"13:10",
 		filas:[
-			{ equipo:"Inteligencia sanitaria", 	sets:2 },
-			{ equipo:"Calidad sanitaria",  		sets:1 },
+			{ equipo: deis, 	sets:2 },
+			{ equipo: cs,  		sets:1 },
 		]
 	},
 	{
 		fecha:"04/09/2026", hora:"14:25",
 		filas:[
-			{ equipo:"Administración", 			sets:2 },
-			{ equipo:"Saneamiento ambiental",  	sets:0 },
+			{ equipo: admin, 			sets:2 },
+			{ equipo: sa,  	sets:0 },
 		]
 	},
 	{
 		fecha:"04/09/2026", hora:"15:15",
 		filas:[
-			{ equipo:"Salud Integral", 			sets:2 },
-			{ equipo:"Planificación y RRHH",  	sets:0 },
+			{ equipo: deais, 			sets:2 },
+			{ equipo: rh,  	sets:0 },
 		]
 	},
 
@@ -78,12 +78,12 @@ const voleyMatches = [
 
 
 // const voleyStandings = [
-// 	{ equipo:"Calidad sanitaria",     sets:6, puntos:6 },
-// 	{ equipo:"Salud Integral",        sets:5, puntos:4 },
-// 	{ equipo:"Planificación y RRHH",  sets:4, puntos:3 },
-// 	{ equipo:"Saneamiento ambiental", sets:3, puntos:2 },
-// 	{ equipo:"Inteligencia sanitaria",sets:2, puntos:1 },
-// 	{ equipo:"Administración",        sets:0, puntos:0 },
+// 	{ equipo: cs,     sets:6, puntos:6 },
+// 	{ equipo: deais,        sets:5, puntos:4 },
+// 	{ equipo: rh,  sets:4, puntos:3 },
+// 	{ equipo: sa, sets:3, puntos:2 },
+// 	{ equipo: deis,sets:2, puntos:1 },
+// 	{ equipo: admin,        sets:0, puntos:0 },
 // ];
 
 

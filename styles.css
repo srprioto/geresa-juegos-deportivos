@@ -278,6 +278,9 @@ table{ width:100%; border-collapse:collapse; }
 	color:var(--ink);
 	border-top:1px solid var(--line);
 }
+.match-body tbody td:first-child{
+	width: 340px;
+}
 .match-body tbody td:not(:first-child){ text-align:center; font-family:'Roboto Mono', monospace; }
 .match-body tbody tr:last-child td{ padding-bottom:14px; }
 
@@ -309,6 +312,13 @@ table{ width:100%; border-collapse:collapse; }
 @keyframes fade{ from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:none;} }
 
 @media (max-width:480px){
+	.wrap{
+		padding: 30px 5px 0;
+	}
+	.match-body tbody td:first-child{
+		padding: 9px 5px;
+		width: auto;
+	}
 
 	/* .hero{
 	    height: 210px;

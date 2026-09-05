@@ -113,7 +113,7 @@ function renderMatches(targetId, matches, statKey, statLabel){
 			</div>
 			<div class="match-body">
 				<table>
-					<thead><tr><th>Equipo</th><th>${statLabel}</th><th>Resultado</th><th>Puntos</th></tr></thead>
+					<thead><tr><th>Equipo</th><th>${statLabel}</th><th>Result.</th><th>Ptos</th></tr></thead>
 					<tbody>
 						${m.filas.map(f=>`
 							<tr>
