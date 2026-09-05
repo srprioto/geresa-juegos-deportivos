@@ -25,6 +25,8 @@ function computeMatches(rawMatches, statKey){
 			fecha: m.fecha,
 			hora: m.hora,
 			ganador,
+			ob: !!m.ob,           // cambio aqui: bandera de partido en observación
+			motivo: m.motivo,     // cambio aqui: motivo opcional del reclamo (para el tooltip)
 			filas: [filaA, filaB],
 		};
 	});
@@ -36,6 +38,8 @@ function computeStandings(processedMatches, statKey){
 	const tabla = {};
 
 	processedMatches.forEach(m=>{
+		if(m.ob) return; // cambio aqui: partido en observación no se cuenta en la tabla de posiciones
+
 		m.filas.forEach(f=>{
 			if(!tabla[f.equipo]){
 				tabla[f.equipo] = { equipo: f.equipo, pj: 0, [statKey]: 0, puntos: 0 }; // cambio aqui: se agrega pj (partidos jugados)
@@ -58,14 +62,25 @@ function badgeFor(r){
 
 function renderStandings(targetId, rows, statKey, statLabel){
 	const tbody = document.getElementById(targetId);
-	tbody.innerHTML = rows
-	.slice()
-	.sort((a,b)=> b.puntos - a.puntos || b[statKey]-a[statKey])
-	.map((r,i)=>`
+	const sorted = rows.slice().sort((a,b)=> b.puntos - a.puntos || b[statKey]-a[statKey]);
+
+	// cambio aqui: ranking denso — equipos con mismos puntos y mismo goles/sets comparten puesto (1,1,1,2,3...)
+	let puesto = 0;
+	sorted.forEach((r,i)=>{
+		if(i===0){
+			puesto = 1;
+		} else {
+			const prev = sorted[i-1];
+			const empatado = r.puntos === prev.puntos && r[statKey] === prev[statKey];
+			if(!empatado) puesto += 1;
+		}
+		r._puesto = puesto;
+	});
+
+	tbody.innerHTML = sorted.map(r=>`
 		<tr>
-			<td><div class="rank-cell"><span class="rank-num">${i+1}</span>${r.equipo}</div></td>
+			<td><div class="rank-cell"><span class="rank-num ${r._puesto===1 ? 'rank-gold':''}">${r._puesto}</span>${r.equipo}</div></td>
 			<td>${r.pj}</td>
-			<!-- cambio aqui: nueva celda con partidos jugados -->
 			<td>${r[statKey]}</td>
 			<td class="pts-cell">${r.puntos}</td>
 		</tr>
@@ -74,15 +89,26 @@ function renderStandings(targetId, rows, statKey, statLabel){
 
 function renderMatches(targetId, matches, statKey, statLabel){
 	const container = document.getElementById(targetId);
-	container.innerHTML = matches.map(m => `
+
+	// cambio aqui: se muestra del último partido jugado al primero (la numeración real no cambia)
+	const matchesInvertidos = [...matches].reverse();
+
+	container.innerHTML = matchesInvertidos.map(m => {
+		// cambio aqui: clase extra + texto "En observación" cuando ob:true
+		const headClass = m.ob ? "match-head observado" : "match-head";
+		const flagContent = m.ob
+			? `<span class="obs-flag" title="${m.motivo ? m.motivo : 'Reclamo activo'}">⚠ En observación</span>`
+			: (m.ganador === "Empate" ? "Resultado: <b>Empate</b>" : "Ganador: <b>"+m.ganador+"</b>");
+
+		return `
 		<div class="match-card">
-			<div class="match-head">
+			<div class="${headClass}">
 				<div class="match-head-left">
 					<span class="match-num">Partido ${m.numero}</span>
 					<span class="match-meta"><span>${m.fecha}</span><span>·</span><span>${m.hora}</span></span>
 				</div>
 				<div class="match-result-flag">
-					${m.ganador === "Empate" ? "Resultado: <b>Empate</b>" : "Ganador: <b>"+m.ganador+"</b>"}
+					${flagContent}
 				</div>
 			</div>
 			<div class="match-body">
@@ -101,30 +127,12 @@ function renderMatches(targetId, matches, statKey, statLabel){
 				</table>
 			</div>
 		</div>
-	`).join("");
+	`;}).join("");
 }
 
-/* ---------------- PROCESAR + PINTAR ---------------- */
-const futbolMatchesProcessed = computeMatches(futbolMatches, "goles");
-const voleyMatchesProcessed  = computeMatches(voleyMatches, "sets");
-
-const futbolStandingsComputed = computeStandings(futbolMatchesProcessed, "goles");
-const voleyStandingsComputed  = computeStandings(voleyMatchesProcessed, "sets");
-
-renderStandings("futbol-standings", futbolStandingsComputed, "goles", "Goles");
-renderMatches("futbol-matches", futbolMatchesProcessed, "goles", "Goles");
-
-renderStandings("voley-standings", voleyStandingsComputed, "sets", "Sets");
-renderMatches("voley-matches", voleyMatchesProcessed, "sets", "Sets");
-
-// cambio aqui: fútbol femenino — mismo procesamiento que fútbol masculino
-const futbolFemMatchesProcessed = computeMatches(futbolFemMatches, "goles");
-const futbolFemStandingsComputed = computeStandings(futbolFemMatchesProcessed, "goles");
-
-renderStandings("futbolf-standings", futbolFemStandingsComputed, "goles", "Goles");
-renderMatches("futbolf-matches", futbolFemMatchesProcessed, "goles", "Goles");
-
 /* ---------------- TABS ---------------- */
+// cambio aqui: los tabs se inicializan primero, así funcionan
+// aunque algo falle más abajo al procesar los datos de un deporte
 document.querySelectorAll(".tab-btn").forEach(btn=>{
 	btn.addEventListener("click", ()=>{
 		document.querySelectorAll(".tab-btn").forEach(b=>b.classList.remove("active"));
@@ -133,3 +141,33 @@ document.querySelectorAll(".tab-btn").forEach(btn=>{
 		document.getElementById(btn.dataset.target).classList.add("active");
 	});
 });
+
+/* ---------------- PROCESAR + PINTAR ---------------- */
+// cambio aqui: cada deporte va en su propio try/catch — si futbol-femenino.js
+// no cargó (o tiene un error), fútbol y vóley igual se pintan y los tabs funcionan
+try{
+	const futbolMatchesProcessed = computeMatches(futbolMatches, "goles");
+	const futbolStandingsComputed = computeStandings(futbolMatchesProcessed, "goles");
+	renderStandings("futbol-standings", futbolStandingsComputed, "goles", "Goles");
+	renderMatches("futbol-matches", futbolMatchesProcessed, "goles", "Goles");
+}catch(err){
+	console.error("Error procesando fútbol masculino:", err);
+}
+
+try{
+	const voleyMatchesProcessed = computeMatches(voleyMatches, "sets");
+	const voleyStandingsComputed = computeStandings(voleyMatchesProcessed, "sets");
+	renderStandings("voley-standings", voleyStandingsComputed, "sets", "Sets");
+	renderMatches("voley-matches", voleyMatchesProcessed, "sets", "Sets");
+}catch(err){
+	console.error("Error procesando vóley:", err);
+}
+
+try{
+	const futbolFemMatchesProcessed = computeMatches(futbolFemMatches, "goles");
+	const futbolFemStandingsComputed = computeStandings(futbolFemMatchesProcessed, "goles");
+	renderStandings("futbolf-standings", futbolFemStandingsComputed, "goles", "Goles");
+	renderMatches("futbolf-matches", futbolFemMatchesProcessed, "goles", "Goles");
+}catch(err){
+	console.error("Error procesando fútbol femenino:", err);
+}

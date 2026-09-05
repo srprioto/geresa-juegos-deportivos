@@ -44,6 +44,36 @@ const voleyMatches = [
 			{ equipo:"Administración",  		sets:0 },
 		]
 	},
+
+
+
+	{
+		fecha:"04/09/2026", hora:"13:10",
+		filas:[
+			{ equipo:"Inteligencia sanitaria", 	sets:2 },
+			{ equipo:"Calidad sanitaria",  		sets:1 },
+		]
+	},
+	{
+		fecha:"04/09/2026", hora:"14:25",
+		filas:[
+			{ equipo:"Administración", 			sets:2 },
+			{ equipo:"Saneamiento ambiental",  	sets:0 },
+		]
+	},
+	{
+		fecha:"04/09/2026", hora:"15:15",
+		filas:[
+			{ equipo:"Salud Integral", 			sets:2 },
+			{ equipo:"Planificación y RRHH",  	sets:0 },
+		]
+	},
+
+
+
+
+
+	
 ];
 
 

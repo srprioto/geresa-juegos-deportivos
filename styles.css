@@ -1,11 +1,10 @@
-
 :root{
 	--navy-deep:   #101c4d;
 	--navy:        #1c2d78;
 	--navy-mid:    #2c3f9c;
 	--gold:        #e8a233;
 	--gold-light:  #f6c869;
-	--paper:       #ffffff;
+	--paper:       #f7f8fc;
 	--ink:         #101c4d;
 	--ink-soft:    #5a628f;
 	--line:        #dfe3f2;
@@ -198,13 +197,24 @@ table{ width:100%; border-collapse:collapse; }
 	font-size:12px; font-weight:700;
 	flex-shrink:0;
 }
-.standings tbody tr:first-child .rank-num{
+/* cambio aqui: antes se pintaba dorado solo la primera fila (:first-child);
+   ahora se pinta cualquier fila cuyo puesto calculado sea 1, aunque haya empate */
+.rank-num.rank-gold{
 	background:var(--gold); color:#fff;
 }
 .pts-cell{
 	font-weight:800 !important;
 	color:var(--navy);
 	font-size:15px !important;
+}
+
+/* cambio aqui: estado "en observación" — barra roja y texto de alerta */
+.match-head.observado{
+	background:linear-gradient(120deg, #7a1f1f, #b23b3b);
+}
+.obs-flag{
+	cursor:help;
+	border-bottom:1px dashed rgba(255,255,255,.55);
 }
 
 /* ---------- MATCHES ---------- */
@@ -261,9 +271,6 @@ table{ width:100%; border-collapse:collapse; }
 	font-weight:600;
 }
 .match-body thead th:not(:first-child){ text-align:center; }
-.match-body tbody td:first-child{
-	padding: 9px 0px 9px 18px;
-}
 .match-body tbody td{
 	padding:9px 18px;
 	font-size:14px;
@@ -286,12 +293,7 @@ table{ width:100%; border-collapse:collapse; }
 .badge-p{ background:#fbe8e8; color:var(--loss); }
 .badge-e{ background:#fbead0; color:var(--draw); }
 
-.team-name {
-    min-width: 240px;
-    /* display: flex; */
-    /* align-items: center; */
-    /* gap: 8px; */
-}
+.team-name{ display:flex; align-items:center; gap:8px; }
 .dot{ width:7px; height:7px; border-radius:50%; background:var(--gold); flex-shrink:0; }
 
 .note{
@@ -307,18 +309,6 @@ table{ width:100%; border-collapse:collapse; }
 @keyframes fade{ from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:none;} }
 
 @media (max-width:480px){
-
-	.match-body tbody td{
-		padding: 5px 10px;
-	}
-	.team-name{
-		min-width: auto;
-	}
-	.wrap {
-		max-width: 760px;
-		margin: 0 auto;
-		padding: 40px 5px 0;
-	}
 
 	/* .hero{
 	    height: 210px;
@@ -336,4 +326,3 @@ table{ width:100%; border-collapse:collapse; }
 	.match-meta{ display:none; }
 	.match-head{ padding:12px 14px; }
 }
-

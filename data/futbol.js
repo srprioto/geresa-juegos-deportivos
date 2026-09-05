@@ -47,6 +47,35 @@ const futbolMatches = [
 		]
 	},
 
+
+
+	{
+		fecha:"04/09/2026", hora:"13:10",
+		filas:[
+			{ equipo:"Saneamiento ambiental", 	goles:5 },
+			{ equipo:"Administración",  		goles:1 },
+		]
+	},
+	{
+		ob:true,
+
+		fecha:"04/09/2026", hora:"14:10",
+		filas:[
+			{ equipo:"Planificación y RRHH", 	goles:2 },
+			{ equipo:"Salud Integral",  		goles:2 },
+		]
+	},
+	{
+		fecha:"04/09/2026", hora:"12:35",
+		filas:[
+			{ equipo:"Inteligencia sanitaria", 	goles:0 },
+			{ equipo:"Calidad sanitaria",  		goles:5 },
+		]
+	},
+
+
+
+
 ];
 
 
