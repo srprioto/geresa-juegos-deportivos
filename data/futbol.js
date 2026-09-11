@@ -72,15 +72,29 @@ const futbolMatches = [
 
 
 
+	{
+		fecha:"11/09/2026", hora:"13:10",
+		filas:[
+			{ equipo: deais, 		goles:2 },
+			{ equipo: deis,  		goles:4 },
+		]
+	},
+	{
+		fecha:"11/09/2026", hora:"14:10",
+		filas:[
+			{ equipo: cs, 			goles:2 },
+			{ equipo: admin,  		goles:0 },
+		]
+	},
+	{
+		fecha:"11/09/2026", hora:"12:35",
+		filas:[
+			{ equipo: rh, 			goles:2 },
+			{ equipo: sa,  			goles:4 },
+		]
+	},
+
 
 ];
 
 
-// const futbolStandings = [
-// 	{ equipo: rh, goles:2, puntos:3 },
-// 	{ equipo: deais,        goles:3, puntos:1 },
-// 	{ equipo: cs,     goles:3, puntos:1 },
-// 	{ equipo: deis,goles:1, puntos:1 },
-// 	{ equipo: sa, goles:1, puntos:1 },
-// 	{ equipo: admin,        goles:0, puntos:0 },
-// ];
