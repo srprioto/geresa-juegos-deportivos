@@ -9,7 +9,16 @@ function computeMatches(rawMatches, statKey){
 
 		let ganador, filaA, filaB;
 
-		if(va === vb){
+		// cambio aqui: victoria forzada — si una fila tiene win:true, gana sin importar los goles/sets
+		const aForzado = !!a.win;
+		const bForzado = !!b.win;
+
+		if(aForzado || bForzado){
+			const aGana = aForzado; // si ambas filas tuvieran win:true (caso inválido), gana "a" por prioridad
+			ganador = aGana ? a.equipo : b.equipo;
+			filaA = { ...a, resultado: aGana ? "G" : "P", puntos: aGana ? 3 : 0 };
+			filaB = { ...b, resultado: aGana ? "P" : "G", puntos: aGana ? 0 : 3 };
+		} else if(va === vb){
 			ganador = "Empate";
 			filaA = { ...a, resultado:"E", puntos:1 };
 			filaB = { ...b, resultado:"E", puntos:1 };
@@ -25,8 +34,10 @@ function computeMatches(rawMatches, statKey){
 			fecha: m.fecha,
 			hora: m.hora,
 			ganador,
-			ob: !!m.ob,           // cambio aqui: bandera de partido en observación
-			motivo: m.motivo,     // cambio aqui: motivo opcional del reclamo (para el tooltip)
+			ob: !!m.ob,           // partido en observación
+			motivo: m.motivo,     // motivo opcional del reclamo (tooltip)
+			forzado: aForzado || bForzado, // cambio aqui: true si el resultado se forzó con win:true
+			contarStat: m[statKey] === false ? false : true,
 			filas: [filaA, filaB],
 		};
 	});
@@ -38,15 +49,18 @@ function computeStandings(processedMatches, statKey){
 	const tabla = {};
 
 	processedMatches.forEach(m=>{
-		if(m.ob) return; // cambio aqui: partido en observación no se cuenta en la tabla de posiciones
+		if(m.ob) return; // partido en observación no se cuenta en nada
 
 		m.filas.forEach(f=>{
 			if(!tabla[f.equipo]){
-				tabla[f.equipo] = { equipo: f.equipo, pj: 0, [statKey]: 0, puntos: 0 }; // cambio aqui: se agrega pj (partidos jugados)
+				tabla[f.equipo] = { equipo: f.equipo, pj: 0, [statKey]: 0, puntos: 0 };
 			}
-			tabla[f.equipo].pj += 1; // cambio aqui: cada fila = un partido jugado para ese equipo
-			tabla[f.equipo][statKey] += f[statKey];
-			tabla[f.equipo].puntos   += f.puntos;
+			tabla[f.equipo].pj += 1;
+			// cambio aqui: goles/sets solo se suman al marcador si contarStat es true
+			if(m.contarStat){
+				tabla[f.equipo][statKey] += f[statKey];
+			}
+			tabla[f.equipo].puntos += f.puntos;
 		});
 	});
 
@@ -94,11 +108,16 @@ function renderMatches(targetId, matches, statKey, statLabel){
 	const matchesInvertidos = [...matches].reverse();
 
 	container.innerHTML = matchesInvertidos.map(m => {
-		// cambio aqui: clase extra + texto "En observación" cuando ob:true
-		const headClass = m.ob ? "match-head observado" : "match-head";
+		// cambio aqui: prioridad de estado — observado (rojo) > forzado por reclamo (celeste) > normal (navy)
+		const headClass = m.ob
+			? "match-head observado"
+			: (m.forzado ? "match-head forzado" : "match-head");
+
 		const flagContent = m.ob
 			? `<span class="obs-flag" title="${m.motivo ? m.motivo : 'Reclamo activo'}">⚠ En observación</span>`
-			: (m.ganador === "Empate" ? "Resultado: <b>Empate</b>" : "Ganador: <b>"+m.ganador+"</b>");
+			: (m.forzado
+				? `Ganador (Por reclamo): <b>${m.ganador}</b>`
+				: (m.ganador === "Empate" ? "Resultado: <b>Empate</b>" : "Ganador: <b>"+m.ganador+"</b>"));
 
 		return `
 		<div class="match-card">

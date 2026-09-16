@@ -217,6 +217,11 @@ table{ width:100%; border-collapse:collapse; }
 	border-bottom:1px dashed rgba(255,255,255,.55);
 }
 
+/* cambio aqui: estado "victoria forzada por reclamo" — barra celeste, más clara que el navy normal */
+.match-head.forzado{
+	background:linear-gradient(120deg, #2c6fbf, #4fa3e0);
+}
+
 /* ---------- MATCHES ---------- */
 .matches{ display:flex; flex-direction:column; gap:16px; }
 
