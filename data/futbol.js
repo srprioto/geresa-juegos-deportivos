@@ -57,7 +57,7 @@ const futbolMatches = [
 		goles:true,
 		fecha:"04/09/2026", hora:"14:10",
 		filas:[
-			{ equipo: rh, 		goles:2 },
+			{ equipo: rh, 		goles:0 },
 			{ equipo: deais,  	goles:2, win: true },
 		]
 	},
