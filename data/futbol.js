@@ -94,6 +94,30 @@ const futbolMatches = [
 	},
 
 
+
+	{
+		fecha:"18/09/2026", hora:"13:10",
+		filas:[
+			{ equipo: rh, 			goles:5 },
+			{ equipo: deis,  		goles:0 },
+		]
+	},
+	{
+		fecha:"18/09/2026", hora:"14:10",
+		filas:[
+			{ equipo: cs, 			goles:1 },
+			{ equipo: sa,  			goles:0 },
+		]
+	},
+	{
+		fecha:"18/09/2026", hora:"12:35",
+		filas:[
+			{ equipo: deais, 		goles:5 },
+			{ equipo: admin,  		goles:1 },
+		]
+	},
+
+
 ];
 
 
