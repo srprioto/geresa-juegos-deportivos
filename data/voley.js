@@ -95,6 +95,32 @@ const voleyMatches = [
 
 
 
+
+
+	{
+		fecha:"18/09/2026", hora:"13:10",
+		filas:[
+			{ equipo: cs, 		sets:2 },
+			{ equipo: sa,  		sets:0 },
+		]
+	},
+	{
+		fecha:"18/09/2026", hora:"14:25",
+		filas:[
+			{ equipo: rh, 		sets:2 },
+			{ equipo: deis,  	sets:0 },
+		]
+	},
+	{
+		fecha:"18/09/2026", hora:"15:15",
+		filas:[
+			{ equipo: deais, 	sets:2 },
+			{ equipo: admin,  	sets:0 },
+		]
+	},
+
+
+
 	
 ];
 
