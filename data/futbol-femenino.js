@@ -1,3 +1,21 @@
+// FASE FINAL (llave de eliminación directa) — aún no se ha jugado ningún cruce.
+// valorA / valorB = goles de cada equipo. Deja en null mientras no se juegue.
+const futbolFemBracket = {
+	semifinales: [
+		{ 
+			equipoA: deais,   valorA: 1, 
+			equipoB: sa,    valorB: 2 
+		},
+		{ 
+			equipoA: rh, valorA: 2, 
+			equipoB: deis, valorB: 1 
+		},
+	],
+	final: { valorA: null, valorB: null }
+};
+
+
+
 const futbolFemMatches = [
 	{
 		fecha:"26/08/2026", hora:"14:30",
@@ -118,4 +136,5 @@ const futbolFemMatches = [
 
 
 ];
+
 

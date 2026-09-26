@@ -1,3 +1,25 @@
+// FASE FINAL (llave de eliminación directa) — ejemplo, reemplaza con los equipos/resultados reales
+// Estructura fija: 2 semifinales (4 equipos) -> final (2 finalistas) -> campeón
+// valorA / valorB = goles de cada equipo en ese cruce. El ganador se calcula solo (mayor valor).
+// Si hay empate y se define por penales u otro criterio, agrega "ganador:'A'" o "ganador:'B'" en ese cruce.
+const futbolBracket = {
+	semifinales: [
+		{ 
+			equipoA: rh,    valorA: 1, 
+			equipoB: deais,    valorB: 0 
+		},
+
+		{ 
+			equipoA: cs,    valorA: 2, 
+			equipoB: sa, valorB: 0 
+		},
+	],
+	final: { valorA: null, valorB: null }
+};
+
+
+
+
 const futbolMatches = [
 	{
 		fecha:"21/08/2026", hora:"14:30",

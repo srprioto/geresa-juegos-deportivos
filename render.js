@@ -1,4 +1,4 @@
-/* ---------------- CÁLCULO AUTOMÁTICO ---------------- */
+/* ------ CÁLCULO AUTOMÁTICO ------ */
 // A partir de { fecha, hora, filas:[{equipo, goles|sets}, {equipo, goles|sets}] }
 // calcula: numero (correlativo), ganador, y en cada fila: resultado (G/E/P) y puntos.
 function computeMatches(rawMatches, statKey){
@@ -67,7 +67,7 @@ function computeStandings(processedMatches, statKey){
 	return Object.values(tabla);
 }
 
-/* ---------------- RENDER ---------------- */
+/* ------ RENDER ------ */
 function badgeFor(r){
 	if(r==="G") return '<span class="badge badge-g">G</span>';
 	if(r==="P") return '<span class="badge badge-p">P</span>';
@@ -149,7 +149,86 @@ function renderMatches(targetId, matches, statKey, statLabel){
 	`;}).join("");
 }
 
-/* ---------------- TABS ---------------- */
+/* ------ FASE FINAL (LLAVE) ------ */
+// Decide el ganador de un cruce ya jugado: mayor valor gana; "ganadorManual" ('A'/'B') resuelve empates (penales, etc.)
+function decideCruce(valorA, valorB, ganadorManual){
+	if(ganadorManual === 'A') return true;
+	if(ganadorManual === 'B') return false;
+	if(valorA === valorB) return null; // empate sin definir todavía (ej. falta penales)
+	return valorA > valorB;
+}
+
+function computeBracket(b){
+	const sf = b.semifinales.map(m => {
+		const jugado = m.valorA != null && m.valorB != null; // cambio aqui: si falta algún valor, el cruce no se ha jugado
+		const resultado = jugado ? decideCruce(m.valorA, m.valorB, m.ganador) : null;
+		const decidido = resultado !== null;
+		return {
+			equipoA:m.equipoA, valorA:m.valorA, aGana: decidido && resultado===true,
+			equipoB:m.equipoB, valorB:m.valorB, bGana: decidido && resultado===false,
+			jugado, decidido,
+			ganador: decidido ? (resultado ? m.equipoA : m.equipoB) : null,
+		};
+	});
+
+	const finA = sf[0].ganador; // null si semifinal 1 aún no se define
+	const finB = sf[1].ganador; // null si semifinal 2 aún no se define
+	const finalJugada = !!finA && !!finB && b.final.valorA != null && b.final.valorB != null;
+	const resultadoFinal = finalJugada ? decideCruce(b.final.valorA, b.final.valorB, b.final.ganador) : null;
+	const finalDecidida = resultadoFinal !== null;
+
+	return {
+		campeon: finalDecidida ? (resultadoFinal ? finA : finB) : null,
+		finalistaA:{ equipo:finA, valor:b.final.valorA, gana:finalDecidida && resultadoFinal===true, jugado:finalJugada, decidido:finalDecidida },
+		finalistaB:{ equipo:finB, valor:b.final.valorB, gana:finalDecidida && resultadoFinal===false, jugado:finalJugada, decidido:finalDecidida },
+		sf1: sf[0], sf2: sf[1],
+	};
+}
+
+function renderBracket(targetId, bracket){
+	const container = document.getElementById(targetId);
+	const r = computeBracket(bracket);
+
+	// cambio aqui: si el cruce no se jugó (o no está decidido), se pinta "pending" en vez de win/lose
+	const hoja = (nombre, valor, gana, jugado, decidido) => {
+		const cls = !jugado ? 'pending' : (decidido ? (gana ? 'win':'lose') : 'pending');
+		const val = jugado ? valor : '–';
+		return `
+			<div class="brk-kid ${cls}">
+				<div class="brk-box"><span class="brk-name">${nombre || '-'}</span><span class="brk-val">${val}</span></div>
+			</div>`;
+	};
+
+	const rama = (finalista, sf) => {
+		const cls = !finalista.jugado ? 'pending' : (finalista.decidido ? (finalista.gana ? 'win':'lose') : 'pending');
+		const val = finalista.jugado ? finalista.valor : '–';
+		const stemCls = (sf.jugado && sf.decidido) ? 'win' : '';
+		return `
+			<div class="brk-kid ${cls}">
+				<div class="brk-box"><span class="brk-name">${finalista.equipo || '-'}</span><span class="brk-val">${val}</span></div>
+				<div class="brk-stem-single ${stemCls}"></div>
+				<div class="brk-kids">
+					${hoja(sf.equipoA, sf.valorA, sf.aGana, sf.jugado, sf.decidido)}
+					${hoja(sf.equipoB, sf.valorB, sf.bGana, sf.jugado, sf.decidido)}
+				</div>
+			</div>`;
+	};
+
+	container.innerHTML = `
+		<div class="brk-box brk-trophy ${r.campeon ? '' : 'pending'}">
+			<span class="brk-trophy-icon">🏆</span>
+			<span class="brk-trophy-tag">CAMPEÓN</span>
+			<span class="brk-team-name">${r.campeon || '-'}</span>
+		</div>
+		<div class="brk-stem-single ${r.campeon ? 'win':''}"></div>
+		<div class="brk-kids">
+			${rama(r.finalistaA, r.sf1)}
+			${rama(r.finalistaB, r.sf2)}
+		</div>
+	`;
+}
+
+/* ------ TABS ------ */
 // cambio aqui: los tabs se inicializan primero, así funcionan
 // aunque algo falle más abajo al procesar los datos de un deporte
 document.querySelectorAll(".tab-btn").forEach(btn=>{
@@ -161,7 +240,7 @@ document.querySelectorAll(".tab-btn").forEach(btn=>{
 	});
 });
 
-/* ---------------- PROCESAR + PINTAR ---------------- */
+/* ------ PROCESAR + PINTAR ------ */
 // cambio aqui: cada deporte va en su propio try/catch — si futbol-femenino.js
 // no cargó (o tiene un error), fútbol y vóley igual se pintan y los tabs funcionan
 try{
@@ -169,6 +248,7 @@ try{
 	const futbolStandingsComputed = computeStandings(futbolMatchesProcessed, "goles");
 	renderStandings("futbol-standings", futbolStandingsComputed, "goles", "Goles");
 	renderMatches("futbol-matches", futbolMatchesProcessed, "goles", "Goles");
+	renderBracket("futbol-bracket", futbolBracket); // cambio aqui: fase final de fútbol
 }catch(err){
 	console.error("Error procesando fútbol masculino:", err);
 }
@@ -178,6 +258,7 @@ try{
 	const voleyStandingsComputed = computeStandings(voleyMatchesProcessed, "sets");
 	renderStandings("voley-standings", voleyStandingsComputed, "sets", "Sets");
 	renderMatches("voley-matches", voleyMatchesProcessed, "sets", "Sets");
+	renderBracket("voley-bracket", voleyBracket); // cambio aqui: fase final de vóley
 }catch(err){
 	console.error("Error procesando vóley:", err);
 }
@@ -187,6 +268,7 @@ try{
 	const futbolFemStandingsComputed = computeStandings(futbolFemMatchesProcessed, "goles");
 	renderStandings("futbolf-standings", futbolFemStandingsComputed, "goles", "Goles");
 	renderMatches("futbolf-matches", futbolFemMatchesProcessed, "goles", "Goles");
+	renderBracket("futbolf-bracket", futbolFemBracket); // cambio aqui: fase final de fútbol femenino
 }catch(err){
 	console.error("Error procesando fútbol femenino:", err);
 }

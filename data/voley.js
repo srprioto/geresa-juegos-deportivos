@@ -1,3 +1,19 @@
+// FASE FINAL (llave de eliminación directa) — aún no se ha jugado ningún cruce.
+// valorA / valorB = sets de cada equipo. Deja en null mientras no se juegue.
+const voleyBracket = {
+	semifinales: [
+		{ 
+			equipoA: deais, valorA: null, 
+			equipoB: cs,   valorB: null 
+		},
+		{ 
+			equipoA: deis,  valorA: null, 
+			equipoB: rh,   valorB: null 
+		},
+	],
+	final: { valorA: null, valorB: null }
+};
+
 
 // VÓLEY — placeholder con las mismas áreas (reemplazar con datos reales)
 const voleyMatches = [
@@ -123,16 +139,5 @@ const voleyMatches = [
 
 	
 ];
-
-
-// const voleyStandings = [
-// 	{ equipo: cs,     sets:6, puntos:6 },
-// 	{ equipo: deais,        sets:5, puntos:4 },
-// 	{ equipo: rh,  sets:4, puntos:3 },
-// 	{ equipo: sa, sets:3, puntos:2 },
-// 	{ equipo: deis,sets:2, puntos:1 },
-// 	{ equipo: admin,        sets:0, puntos:0 },
-// ];
-
 
 
