@@ -3,12 +3,12 @@
 const voleyBracket = {
 	semifinales: [
 		{ 
-			equipoA: deais, valorA: null, 
-			equipoB: cs,   valorB: null 
+			equipoA: deais, valorA: 2, 
+			equipoB: cs,   valorB: 0 
 		},
 		{ 
-			equipoA: deis,  valorA: null, 
-			equipoB: rh,   valorB: null 
+			equipoA: deis,  valorA: 2, 
+			equipoB: rh,   valorB: 0 
 		},
 	],
 	final: { valorA: null, valorB: null }
