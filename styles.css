@@ -355,7 +355,7 @@ table{ width:100%; border-collapse:collapse; }
 	overflow-x:auto;
 	-webkit-overflow-scrolling:touch;
 	padding:4px 20px 14px;
-	margin-bottom:8px;
+	margin-bottom:40px;
 }
 .brk{
 	display:flex;
